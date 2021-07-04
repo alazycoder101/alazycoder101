@@ -1,36 +1,58 @@
-HOMEPAGE_URL=https://storyfm.cn/
+HOMEPAGE_URL=https://storyfm.cn
 PUBLISHED_URL=https://storyfm.cn/published-stories/
-COUNT=6
+PAGE=${PAGE:-}
+DEBUG=${DEBUG:-}
+COUNT=${COUNT:-2}
+FETCH=${FETCH:-}
+OFFSET=${OFFSET:-0}
+PAGE_SIZE=6
 
-if [ ! -f index.html ]; then
+if [ ! -z $PAGE ]; then
+  HOMEPAGE_URL="${HOMEPAGE_URL}/page/${PAGE}/"
+fi
+
+if [[ ! -z $FETCH ]] || [[ ! -f index.html ]]; then
   curl $HOMEPAGE_URL -o index.html
 fi
 
-if [ ! -f published.html ]; then
+if [[ ! -z $FETCH ]] || [[ ! -f published.html ]]; then
   curl $PUBLISHED_URL -o published.html
 fi
 
-titles=( $(grep -m $COUNT '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[^<]+') )
-links=( $(grep -m $COUNT -Eo '<a href="https://storyfm.cn/episodes[^>]+/">' index.html|grep -Eo 'https[^"]+') )
+MAX_COUNT=$(( PAGE_SIZE*PAGE + COUNT + 2 ))
 
-IFS=$'\r' wechat=( $(grep 'mp.weixin.' -m $COUNT published.html) )
-# check matchment
-e=$(echo "${wechat[0]}"|grep -m1 -Eo 'E[0-9]+'|grep -Eo '[0-9]+')
-episode=${titles[0]:1:3}
-echo $wechat
-if [ "$e" -lt "$episode" ]; then
-  diff=$(( episode - e ))
-  for (( i=0; i<$diff; i++ )); do
-    unset titles[$i]
-    unset links[$i]
-    #links=("${links[@]:$diff}")
-    #echo ${#titles[@]}
-  done
+afirst=( $(grep -m 1 '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[0-9]+'|grep -Eo '[0-9]+') )
+ifirst=$(grep 'mp.weixin.' -m 1 published.html|grep -Eo 'E[0-9]+'|grep -Eo '[0-9]+' )
+
+istart=0
+astart=0
+
+if [[ $ifirst > $afirst ]]; then
+  istart=$(( ifirst - afirst + OFFSET + 1 ))
+else
+  astart=$(( afirst - ifirst + OFFSET + 1))
 fi
 
-for index in "${!titles[@]}"
+IFS=$'\n' titles=( $(grep -m $MAX_COUNT '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[^<]+'| tail -n +$astart|head -n $COUNT) )
+IFS=$'\n' links=( $(grep -m $MAX_COUNT -Eo '<a href="https://storyfm.cn/episodes[^>]+/">' index.html|grep -Eo 'https[^"]+'| tail -n +$astart|head -n $COUNT) )
+
+IFS=$'\n' wechat=( $(grep 'mp.weixin.' -m $MAX_COUNT published.html| tail -n +$istart| head -n $COUNT) )
+
+if [ ! -z "$DEBUG" ]; then
+  printf 'ifirst=%s afirst=%s\n' $ifirst $afirst
+  printf 'istart=%s astart=%s\n' $istart $astart
+  printf 'MAX_COUNT=%s\n' $MAX_COUNT
+  printf 'titles\n'
+  printf '%s\n' "${titles[@]}"
+  printf 'links\n'
+  printf '%s\n' "${wechat[@]}"
+fi
+
+for index in "${!wechat[@]}"
 do
   title="${titles[index]}"
+  echo $index
+  echo $title
   episode=${title:0:4}
   link="${links[index]}"
   episode_file="${episode}.html"
@@ -38,19 +60,23 @@ do
     curl -L $link -o $episode_file
   fi
   audio=$(grep -Eo '>https://[^<]+mp3<' $episode.html|grep -Eo 'https://[^<]+mp3')
-  echo $audio
   audio_file="${episode}.mp3"
   if [ ! -f "$audio_file" ]; then
     curl -L $audio -o $audio_file
   fi
+
   pub="${wechat[index]}"
-  echo $pub
-  e=$(echo "$pub"|grep -m1 -Eo 'E[0-9]+')
-  echo $e
-  echo $episode
-  url=$(echo "$pub"|grep -Eo 'http[^"]+')
-  image_url=$(curl -L $url|grep -Eo '<img class="rich_pages js_insertlocalimg" data-backh="804"[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
-  echo "image_url="${image_url}""
-  curl -L $image_url -o $e.jpg
-  ffmpeg -r 1/5 -f image2 -loop 1 -i $e.jpg -i $audio_file -c:v libx264 -tune stillimage -c:a aac -b:a 191999 -pix_fmt yuv420p -vf 'pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2' -shortest "$title.mp4"
+  echo "===================="
+  printf '%s image: %s\n' $index $pub
+  e=${title:0:4}
+  image_file="$e.jpg"
+  printf 'image: %s\n' $image_file
+  if [ ! -f $image_file ]; then
+    url=$(echo "$pub"|grep -Eo 'http[^"]+')
+    printf '$pub url: %s\n' $url
+    image_url=$(curl -L $url|grep -Eo '<img class="rich_pages js_insertlocalimg" data-backh="804"[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
+    curl -L $image_url -o $image_file
+  fi
+  echo $image_file
+  ffmpeg -r 1/5 -f image2 -loop 1 -i $image_file -i $audio_file -c:v libx264 -tune stillimage -c:a aac -b:a 191999 -pix_fmt yuv420p -vf 'pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2' -shortest "$title.mp4"
 done
