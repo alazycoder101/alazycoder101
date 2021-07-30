@@ -72,7 +72,7 @@ do
   if [ ! -f $image_file ]; then
     url=$(echo "$pub"|grep -Eo 'http[^"]+')
     printf '$pub url: %s\n' $url
-    image_url=$(curl -L $url|grep -Eo '<img class="rich_pages js_insertlocalimg" data-backh="804"[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
+    image_url=$(curl -L $url|grep -Eo '<img class="rich_pages( js_insertlocalimg)?" (data-cropselx1|data-backh="804")[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
     curl -L $image_url -o $image_file
   fi
   ffmpeg -r 1/5 -f image2 -loop 1 -i $image_file -i $audio_file -c:v libx264 -tune stillimage -c:a aac -b:a 191999 -pix_fmt yuv420p -vf 'pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2' -shortest "$title.mp4"
