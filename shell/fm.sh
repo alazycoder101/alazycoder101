@@ -21,11 +21,11 @@ fi
 
 MAX_COUNT=$(( PAGE_SIZE*PAGE + COUNT + 2 + OFFSET ))
 
-afirst=$(grep -m 1 '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[0-9]+'|grep -Eo '[0-9]+')
+afirst=$(grep -m 1 '<h2 class="soundbyte-podcast-progression-title">E' index.html|grep -Eo 'E[0-9]+'|grep -Eo '[0-9]+')
 ifirst=$(grep 'mp.weixin.' -m 1 published.html|grep -Eo 'E[0-9]+'|grep -Eo '[0-9]+' )
 
-istart=$(( ifirst - afirst + OFFSET + 1 ))
-astart=$(( ifirst - afirst + OFFSET + 1 ))
+istart=0
+astart=0
 
 if [[ $ifirst > $afirst ]]; then
   istart=$(( ifirst - afirst + OFFSET + 1 ))
@@ -33,7 +33,7 @@ else
   astart=$(( afirst - ifirst + OFFSET + 1))
 fi
 
-IFS=$'\n' titles=( $(grep -m $MAX_COUNT '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[^<]+'| tail -n +$astart|head -n $COUNT) )
+IFS=$'\n' titles=( $(grep -m $MAX_COUNT '<h2 class="soundbyte-podcast-progression-title">E' index.html|grep -Eo 'E[^<]+'| tail -n +$astart|head -n $COUNT) )
 IFS=$'\n' links=( $(grep -m $MAX_COUNT -Eo '<a href="https://storyfm.cn/episodes[^>]+/">' index.html|grep -Eo 'https[^"]+'| tail -n +$astart|head -n $COUNT) )
 
 IFS=$'\n' wechat=( $(grep 'mp.weixin.' -m $MAX_COUNT published.html| tail -n +$istart| head -n $COUNT) )
@@ -56,6 +56,7 @@ do
   episode=${title:0:4}
   link="${links[index]}"
   episode_file="${episode}.html"
+  w_file="${episode}-w.html"
   if [ ! -f $episode_file ]; then
     printf 'audiofile:%s\n' $episode_file
     curl -L $link -o $episode_file
@@ -71,8 +72,13 @@ do
   image_file="$e.jpg"
   if [ ! -f $image_file ]; then
     url=$(echo "$pub"|grep -Eo 'http[^"]+')
+    curl -L $url -o $w_file
     printf '$pub url: %s\n' $url
-    image_url=$(curl -L $url|grep -Eo '<img class="rich_pages( js_insertlocalimg)?" (data-cropselx1|data-backh="804")[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
+    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=jpeg"' -m 1 $w_file|grep -Eo 'https:.*jpeg')
+    if [ -z $image_url ]; then
+      echo "Fail to get image url"
+      exit
+    fi
     curl -L $image_url -o $image_file
   fi
   ffmpeg -r 1/5 -f image2 -loop 1 -i $image_file -i $audio_file -c:v libx264 -tune stillimage -c:a aac -b:a 191999 -pix_fmt yuv420p -vf 'pad=width=ceil(iw/2)*2:height=ceil(ih/2)*2' -shortest "$title.mp4"
