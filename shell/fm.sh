@@ -34,7 +34,7 @@ else
 fi
 
 IFS=$'\n' titles=( $(grep -m $MAX_COUNT '<h2 class="soundbyte-podcast-progression-title">E' index.html|grep -Eo 'E[^<]+'| tail -n +$astart|head -n $COUNT) )
-IFS=$'\n' links=( $(grep -m $MAX_COUNT -Eo '<a href="https://storyfm.cn/episodes[^>]+/">' index.html|grep -Eo 'https[^"]+'| tail -n +$astart|head -n $COUNT) )
+IFS=$'\n' links=( $(grep -m $MAX_COUNT -Eo '<a href="https://storyfm.cn/episodes/e[^>]+/">' index.html|grep -Eo 'https[^"]+'| tail -n +$astart|head -n $COUNT) )
 
 IFS=$'\n' wechat=( $(grep 'mp.weixin.' -m $MAX_COUNT published.html| tail -n +$istart| head -n $COUNT) )
 
@@ -51,9 +51,12 @@ fi
 for index in "${!wechat[@]}"
 do
   title="${titles[index]}"
-  echo $index
-  echo $title
+  echo "$index $title"
   episode=${title:0:4}
+  if [ -z $episode ]; then
+    echo "$index fail to fetch title in ${titles[@]}"
+    exit
+  fi
   link="${links[index]}"
   episode_file="${episode}.html"
   w_file="${episode}-w.html"
@@ -64,6 +67,10 @@ do
   audio=$(grep -Eo '>https://[^<]+mp3<' $episode.html|grep -Eo 'https://[^<]+mp3')
   audio_file="${episode}.mp3"
   if [ ! -f "$audio_file" ]; then
+    if [ -z $audio ]; then
+      echo "Fail to get audio url"
+      exit
+    fi
     curl -L $audio -o $audio_file
   fi
 
@@ -72,7 +79,9 @@ do
   image_file="$e.jpg"
   if [ ! -f $image_file ]; then
     url=$(echo "$pub"|grep -Eo 'http[^"]+')
-    curl -L $url -o $w_file
+    if [ ! -f $w_file ]; then
+      curl -L $url -o $w_file
+    fi
     printf '$pub url: %s\n' $url
     image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=jpeg"' -m 1 $w_file|grep -Eo 'https:.*jpeg')
     if [ -z $image_url ]; then
