@@ -83,7 +83,7 @@ do
       curl -L $url -o $w_file
     fi
     printf '$pub url: %s\n' $url
-    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=jpeg"' -m 1 $w_file|grep -Eo 'https:.*jpeg')
+    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?( custom_select_img)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=(jpeg|png)"' -m 1 $w_file|grep -Eo 'https:.*jpeg')
     if [ -z $image_url ]; then
       echo "Fail to get image url"
       exit

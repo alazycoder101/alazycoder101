@@ -1,26 +1,26 @@
-RSS_URL=http://storyfm.cn/feed/episodes
+HOMEPAGE_URL=https://storyfm.cn/
 PUBLISHED_URL=https://storyfm.cn/published-stories/
 COUNT=1
 
-if [ ! -f fm.xml ]; then
-  curl -L $RSS_URL -o fm.xml
-fi
-
-
-files=$(xmllint --xpath "/rss/channel/item[position()>last()-$COUNT]/enclosure/@url" fm.xml)
-read -r -a mp3_files <<< "$files"
-
 if [ ! -f index.html ]; then
-  curl $PUBLISHED_URL -o index.html
+  curl $HOMEPAGE_URL -o index.html
 fi
 
-wechat=$(grep 'http://mp.weixin' -m $COUNT index.html)
-read -r -a titles <<< $(xmllint --xpath "/rss/channel/item[position()>last()-$COUNT]/title/text()" fm.xml)
+if [ ! -f published.html ]; then
+  curl $PUBLISHED_URL -o published.html
+fi
 
-#[[ $url ~ (https://\\[^"\\]+) ]] && echo ${BASH_REMATCH[1]}
-for index in "${!mp3_files[@]}"
+titles=$(grep -m $COUNT '<h2 class="soundbyte-podcast-progression-title">' index.html|grep -Eo 'E[^<]+')
+read -r -a titles <<< "$titles"
+links=$(grep -m $COUNT -Eo '<a href="https://storyfm.cn/episodes[^>]+/">' index.html|grep -Eo 'https[^"]+')
+read -r -a links <<< "$links"
+
+wechat=$(grep 'http://mp.weixin' -m $COUNT published.html)
+
+for index in "${!titles[@]}"
 do
-  eval "${mp3_files[index]}"
+  title= "${titles[index]}"
+  link= "${links[index]}"
   #curl -L -O -J $url
   url=$(echo "${wechat[index]}"|grep -Eo 'http[^"]+')
   image_url=$(curl -L $url|grep -Eo '<img class="rich_pages js_insertlocalimg" data-backh="804"[^>]+wx_fmt=jpeg"' -m 1|grep -Eo 'https:.*jpeg')
