@@ -52,7 +52,9 @@ do
     if [ ! -f $w_file ]; then
       curl -L $url -o $w_file
     fi
-    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?( custom_select_img)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=(jpeg|png)"' -m 1 $w_file|grep -Eo 'https:.*(jpeg|png)')
+    # rich_pages wxw-img js_insertlocalimg img_loading
+    # rich_pages js_insertlocalimg wxw-img
+    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?( custom_select_img)?( wxw-img)?( img_loading)?" ((data-cropselx1|data-backh)="[0-9]+")[^>]+wx_fmt=(jpeg|png)"' -m 1 $w_file|grep -Eo 'https:.*(jpeg|png)')
     ext=${image_url:(-3)}
     image_file="$episode.$ext"
     if [ ! -f $image_file ]; then
