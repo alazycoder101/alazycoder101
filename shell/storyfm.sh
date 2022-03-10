@@ -10,7 +10,7 @@ fi
 
 # <p>E606.<a href="https://mp.weixin.qq.com/s/wcwqgcBVAVL8vQbyAYfJOw">我们在元宇宙里谈恋爱</a></p>
 regex="<p>(E[0-9]+).<a href=\"(.+)\">(.*)</a></p>"
-IFS=$'\n' items=( $(grep -m 4 -Eo '<p>E[0-9]*.<a href=".*</p>' episode.xml) )
+IFS=$'\n' items=( $(grep -m $COUNT -Eo '<p>E[0-9]*.<a href=".*</p>' episode.xml) )
 
 if [ ! -z "$DEBUG" ]; then
   printf 'items\n'
@@ -49,15 +49,16 @@ do
     fi
 
     pub="${wechat[index]}"
-    image_file="$episode.png"
+    if [ ! -f $w_file ]; then
+      curl -L $url -o $w_file
+    fi
+    image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?( custom_select_img)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=(jpeg|png)"' -m 1 $w_file|grep -Eo 'https:.*(jpeg|png)')
+    ext=${image_url:(-3)}
+    image_file="$episode.$ext"
     if [ ! -f $image_file ]; then
       url=$(echo "$pub"|grep -Eo 'http[^"]+')
-      if [ ! -f $w_file ]; then
-        curl -L $url -o $w_file
-      fi
       printf '$pub url: %s\n' $url
       # <img class="rich_pages wxw-img" data-backh="804" data-backw="562" data-cropselx1="0" data-cropselx2="562" data-cropsely1="0" data-cropsely2="804" data-ratio="1.4305555555555556" data-s="300,640" data-src="https://mmbiz.qpic.cn/mmbiz_png/dhkrmSXEeyB3icRI4ZlHsA6BYPibkDMyaCyiaAhdTSWTRqUvzUbObicx4zVPujlMq9rndTfq7V0SnVJicc1YvQuicTQw/640?wx_fmt=png" data-type="png" data-w="1008" style="visibility: visible !important; width: 100% !important; height: auto !important;" _width="100%" src="https://mmbiz.qpic.cn/mmbiz_png/dhkrmSXEeyB3icRI4ZlHsA6BYPibkDMyaCyiaAhdTSWTRqUvzUbObicx4zVPujlMq9rndTfq7V0SnVJicc1YvQuicTQw/640?wx_fmt=png&amp;wxfrom=5&amp;wx_lazy=1&amp;wx_co=1" crossorigin="anonymous" alt="Image" data-fail="0">
-      image_url=$(grep -Eo '<img class="rich_pages( wxw-img)?( js_insertlocalimg)?( custom_select_img)?" ((data-cropselx1|data-backh)="8[0-9]+")[^>]+wx_fmt=(jpeg|png)"' -m 1 $w_file|grep -Eo 'https:.*(jpeg|png)')
       if [ -z $image_url ]; then
         echo "Fail to get image url"
         exit
