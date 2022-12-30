@@ -6,11 +6,9 @@ say_something[]
 say_something.===
 
 times_two = ->(x) { x * 2 }
-times_two.call(10)
-# 20
+times_two.call(10) # => 20
 t = Proc.new { |x,y| puts "I don't care about arguments!" }
-t.call
-# "I don't care about arguments!"
+t.call # => "I don't care about arguments!"
 
 # Should work
 my_lambda = -> { return 1 }
@@ -27,9 +25,7 @@ def call_proc
   puts "After proc"
 end
 
-p call_proc
-# Prints "Before proc" but not "After proc"
-
+p call_proc # Prints "Before proc" but not "After proc"
 
 def return_binding
   foo = 100

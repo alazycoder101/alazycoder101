@@ -1,3 +1,8 @@
+puts "self=#{self}"
+puts "self.class=#{self.class}"
+method_p = method(:p)
+puts "owner: #{method_p.owner}"
+
 # https://www.alchemists.io/articles/ruby_method_parameters_and_arguments/
 def show_params(func)
   f = method(func.to_sym)
