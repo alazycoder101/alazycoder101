@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <p>Count: <output id="resultNum"></output></p>
+  <button onclick="startWorker()">Start Count</button>
+  <button onclick="stopWorker()">Stop Count</button>
+  <script>
+    var num;
+    function startWorker() {
+      if (typeof (Worker) !== "undefined") {
+        if (typeof (num) == "undefined") {
+          num = new Worker("demo_workers.js");
+        }
+        num.onmessage = function (event) {
+          document.getElementById("resultNum").innerHTML = event.data;
+        };
+      } else {
+        document.getElementById("resultNum").innerHTML = "Something went wrong.... Your browser might nto support Web Workers";
+      }
+    }
+    function stopWorker() {
+      num.terminate();
+      num = undefined;
+    }
+  </script>
+</body>
+
+</html>

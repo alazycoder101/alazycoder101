@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>JavaScript Single Thread</title>
+</head>
+
+<body>
+  <script>
+    document.write("ABC ");
+    setTimeout(function () {
+      document.write("MNO ");
+    }, 0);
+    document.write("DEF ");
+    setTimeout(function () {
+      document.write("JKL ");
+    }, 2000);
+    document.write("GHI ");
+    setTimeout(function () {
+      document.write("PQR ");
+    }, 3000);
+  </script>
+</body>
+
+</html>

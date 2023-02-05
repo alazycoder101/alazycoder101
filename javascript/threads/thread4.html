@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+
+<body>
+  <p>Count Up: <output id="resultNumUp"></output></p>
+  <p>Count Down: <output id="resultNumDown"></output></p>
+  <button onclick="startWorker()">Start Count</button>
+  <button onclick="stopWorker()">Stop Count</button>
+  <script>
+    var numup, numdown;
+    function startWorker() {
+      if (typeof (Worker) !== "undefined") {
+        if (typeof (numup) == "undefined") {
+          numup = new Worker("up_worker.js");
+        }
+        numup.onmessage = function (event) {
+          document.getElementById("resultNumUp").innerHTML = event.data;
+        };
+
+        if (typeof (numdown) == "undefined") {
+          numdown = new Worker("down_worker.js");
+        }
+        numdown.onmessage = function (event) {
+          document.getElementById("resultNumDown").innerHTML = event.data;
+        };
+      } else {
+        document.getElementById("resultNumUp").innerHTML = "Something went wrong.... Your browser might nto support Web Workers";
+        document.getElementById("resultNumDown").innerHTML = "Something went wrong.... Your browser might nto support Web Workers";
+      }
+    }
+    function stopWorker() {
+      numup.terminate();
+      numup = undefined;
+      numdown.terminate();
+      numdown = undefined;
+    }
+  </script>
+</body>
+
+</html>
