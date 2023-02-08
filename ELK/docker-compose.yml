@@ -1,0 +1,43 @@
+version: '2.2'
+services:
+  kibana:
+    image: kibana:8.6.1
+    container_name: kibana
+    environment:
+      - I18N_LOCALE=zh-CN
+      - XPACK_GRAPH_ENABLED=true
+      - TIMELION_ENABLED=true
+      - XPACK_MONITORING_COLLECTION_ENABLED="true"
+    ports:
+      - "5601:5601"
+    networks:
+      - es-net
+  elasticsearch:
+    image: elasticsearch:8.6.1
+    container_name: es
+    environment:
+      - cluster.name=geektime
+      - node.name=es
+      - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
+      - discovery.seed_hosts=es
+      - cluster.initial_master_nodes=es
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - es-data1:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - es-net
+
+
+volumes:
+  es-data1:
+    driver: local
+
+networks:
+  es-net:
+    driver: bridge
