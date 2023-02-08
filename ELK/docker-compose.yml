@@ -1,7 +1,7 @@
 version: '2.2'
 services:
   kibana:
-    image: kibana:8.6.1
+    image: "kibana:${VERSION}"
     container_name: kibana
     environment:
       - I18N_LOCALE=zh-CN
@@ -13,7 +13,7 @@ services:
     networks:
       - es-net
   elasticsearch:
-    image: elasticsearch:8.6.1
+    image: "elasticsearch:${VERSION}"
     container_name: es
     environment:
       - cluster.name=geektime
