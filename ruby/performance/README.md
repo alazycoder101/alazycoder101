@@ -1,3 +1,8 @@
+# IO/CPU unfairness
+https://ivoanjo.me/blog/2023/02/11/ruby-unexpected-io-vs-cpu-unfairness
+```bash
+```
+
 # heap
 
 ### Solution 1: Virtual memory
@@ -110,6 +115,7 @@ puts "\n\nTotal Size: #{bytesize}/#{memsize}"
 ```
 
 Tools
+---
 
 1. https://github.com/Shopify/heap-profiler
 2. https://github.com/csfrancis/harb
