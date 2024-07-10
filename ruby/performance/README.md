@@ -1,6 +1,15 @@
 # IO/CPU unfairness
 https://ivoanjo.me/blog/2023/02/11/ruby-unexpected-io-vs-cpu-unfairness
 ```bash
+ruby 3.1.2p20 (2022-04-12 revision 4491bb740a) [arm64-darwin21]
+
+ruby io-cpu-unfairness-1.rb
+Calculating -------------------------------------
+             request      0.861  (± 0.0%) i/s -      1.000  in   1.161163s
+ruby io-cpu-unfairness-2.rb
+Calculating -------------------------------------
+             request      0.602  (± 0.0%) i/s -      1.000  in   1.660690s
+
 ```
 
 # heap

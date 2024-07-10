@@ -2,9 +2,8 @@ require 'net/http'
 require 'benchmark/ips'
 
 def perform_request
-  uri = URI('https://ifconfig.me/')
-  timeout = 1
-  Net::HTTP.start('http://ifconfig.me', open_timeout: timeout, read_timeout: timeout, write_timeout: timeout) do |http|
+  timeout = 10
+  Net::HTTP.start('ifconfig.me', open_timeout: timeout, read_timeout: timeout, write_timeout: timeout) do |http|
     http.get('/')
   end
 end

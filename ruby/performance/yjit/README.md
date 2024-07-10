@@ -1,3 +1,94 @@
+```bash
+ruby --yjit-dump-diasm --yjit-call-threshold=2 \
+  --disable-gems -e "def three = 1 + 2; three; three"
+```
+
+```bash
+$ RUBYOPT=--mjit=pause irb
+
+def a = nil
+
+puts RubyVM::InstructionSequence.disasm(method(:a))
+putself = RubyVM::MJIT.const_get(:INSNS).values.find { |i| i.name ==
+:putself }
+
+C = RubyVM::MJIT.const_get(:C)}
+
+iseq = C.rb_iseqw_to_iseq(RUBYOPT::InstructionSequence.of(method(:a)))
+iseq.body.iseq_encoded[0] = C.rb_vm_insn_encode(putself.bin)
+a
+```
+
+Own JIT instructions
+```bash
+--mjit=pause
+
+# define
+RubyVM::MJIT.compile
+# hack RubyVM
+RubyVM::MJIT.const_get(:C)
+# start JIT
+RubyVM::MJIT.resume
+```
+
+Monkey-patch RubyVM::MJIT.compile
+
+```ruby
+class << RubyVM::MJIT
+  def compile(iseq)
+    buf = Fisk::Helpers.jitbuffer(4096)
+    Fisk.new.asm(buf) do
+      # pop stack frames
+      add rsi, imm32(0x40)
+      mov m64(rdi, 0x10), rsi
+      # return true
+      mov rax, imm64(0x14)
+      ret
+    end
+    puts "JIT compile: #{iseq.body.location.label}"
+    return buf.memory.to_i
+  end
+end
+RubyVM::MJIT.resume
+```
+
+```ruby
+# a.rb
+def test = false
+p test
+p test
+```
+
+```bash
+ruby --mjit=pause --mjit-wait --mjit-min-calls=2 /tmp/a.rb 
+```
+
+```ruby
+class << RubyVM::MJIT.const_get(:Compiler)
+  def compile(f, _iseq, funcname, _id)
+    c = RubyVM::MJIT.const_get(:C)
+    c.fprintf(f, "VALUE #{funcnae}(rb_execution_context_t *ec,
+    rb_control_frame_t *cfp)\n"\n")
+    c.fprintf(f, "    ec-cfp = RUBY_VM_PREVIOUS_CONTROL_FRAME(cfp);\n")
+    c.fprintf(f, "    return Qtrue;\n")
+    c.fprintf(f, "}\n")
+    return true
+  end
+end
+RubyVM::MJIT.resume
+
+def test = false
+p test
+p test
+```
+
+```bash
+ruby --mjit=pause --mjit-min-calls=2 --mjit-verbose=1 --mjit-wait /tmp/b.rb 
+```
+
+
+
+
 
 * Retained: long lived memory use and object count retained due to the execution of the code block.
 

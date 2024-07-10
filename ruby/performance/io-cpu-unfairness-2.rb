@@ -11,13 +11,8 @@ Thread.new do
 end
 
 def perform_request
-  uri = URI('https://ifconfig.me/')
-  timeout = 1
-  Net::HTTP.start(
-    uri.host, uri.port,
-    use_ssl: uri.scheme == 'https',
-    open_timeout: timeout, read_timeout: timeout, write_timeout: timeout
-  ) do |http|
+  timeout = 10
+  Net::HTTP.start('ifconfig.me', open_timeout: timeout, read_timeout: timeout, write_timeout: timeout) do |http|
     http.get('/')
   end
 end
