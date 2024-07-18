@@ -1,3 +1,4 @@
+NR_CORES =
 def compute_primes
   NR_CORES.times do |i|
     fork do
@@ -41,3 +42,5 @@ def filter_primes
     Process.waitpid(pid)
   end
 end
+
+filter_primes
