@@ -1,9 +1,12 @@
 def parallel_map(array, num_ractors = 4, &block)
+  # Convert the block to a shareable Proc
+  shareable_proc = Ractor.make_shareable(Proc.new(&block))
+
   ractors = num_ractors.times.map do
-    Ractor.new(block) do |block|
+    Ractor.new(shareable_proc) do |proc|
       while item = Ractor.receive
         break if item.nil?
-        result = block.call(item)
+        result = proc.call(item)
         Ractor.yield([item, result])
       end
     end
