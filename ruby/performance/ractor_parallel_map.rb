@@ -1,8 +1,10 @@
-def parallel_map(array, num_ractors = 4)
+def parallel_map(array, num_ractors = 4, &block)
   ractors = num_ractors.times.map do
-    Ractor.new do
+    Ractor.new(block) do |block|
       while item = Ractor.receive
-        Ractor.yield([item, yield(item)])
+        break if item.nil?
+        result = block.call(item)
+        Ractor.yield([item, result])
       end
     end
   end
@@ -15,6 +17,7 @@ def parallel_map(array, num_ractors = 4)
   num_ractors.times { ractors.sample.send(nil) }
 
   while result = Ractor.select(*ractors)
+    break if result.value.nil?
     results << result.value
   end
 
