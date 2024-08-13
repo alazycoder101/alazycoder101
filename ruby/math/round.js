@@ -1,0 +1,10 @@
+console.log(Number((2.675).toFixed(2)));
+console.log(Number((2.675).toFixed(3)));
+console.log(Number((2.675).toFixed(4)));
+console.log(Number((2.675).toFixed(5)));
+console.log(Number((2.675).toFixed(6)));
+console.log(Number((2.675).toFixed(7)));
+console.log(Number((2.675).toFixed(8)));
+console.log(Number((2.675).toFixed(9)));
+console.log(Number((2.675).toFixed(10)));
+console.log(Number((2.675).toFixed(11)));
