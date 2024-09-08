@@ -1,0 +1,34 @@
+GEM
+  remote: https://rubygems.org/
+  specs:
+    debug (1.9.2)
+      irb (~> 1.10)
+      reline (>= 0.3.8)
+    io-console (0.7.2)
+    irb (1.14.0)
+      rdoc (>= 4.0.0)
+      reline (>= 0.4.2)
+    psych (5.1.2)
+      stringio
+    rack (3.1.7)
+    rackup (2.1.0)
+      rack (>= 3)
+      webrick (~> 1.8)
+    rdoc (6.7.0)
+      psych (>= 4.0.0)
+    reline (0.5.9)
+      io-console (~> 0.5)
+    stringio (3.1.1)
+    webrick (1.8.1)
+
+PLATFORMS
+  arm64-darwin-23
+  ruby
+
+DEPENDENCIES
+  debug (~> 1.9)
+  rack (~> 3.1)
+  rackup (~> 2.1)
+
+BUNDLED WITH
+   2.5.17
