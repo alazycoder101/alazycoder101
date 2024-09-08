@@ -1,16 +1,15 @@
 function getTimestamp() {
     return Date.now() + Math.random();
 }
-let id = 0;
+let id = 1;
 function getId() {
     return id++;
 }
 
-
 class MyPromise {
     constructor(executor) {
         this.id = getId();
-        console.log('constructor', this.id);
+        console.log('->constructor', this.id);
         // The initial state of the promise is 'pending'.
         this.state = 'pending';
         this.value = undefined;
@@ -26,6 +25,7 @@ class MyPromise {
     _resolve = (value) => {
         // Simulate async operation
         setTimeout(() => {
+            console.log('->_resolve', this.id, 'handlers', this.handlers.length);
             if (this.state === 'pending') {
                 this.state = 'fulfilled';
                 this.value = value;
@@ -45,9 +45,9 @@ class MyPromise {
     }
 
     _handle(handler) {
-        console.log('handler', this.id, this.handlers.length);
         if (this.state === 'pending') {
             this.handlers.push(handler);
+            console.log('->_handler', this.id, 'handlers', this.handlers.length);
         } else {
             if (this.state === 'fulfilled' && typeof handler.onFulfilled === 'function') {
                 handler.onFulfilled(this.value);
@@ -59,7 +59,7 @@ class MyPromise {
     }
 
     then(onFulfilled, onRejected) {
-        console.log('then', this.id);
+        console.log('->then', this.id, this.state, 'handlers', this.handlers.length);
         return new MyPromise((resolve, reject) => {
             this._handle({
                 onFulfilled: value => {
@@ -97,10 +97,16 @@ const promise = new MyPromise((resolve, reject) => {
     setTimeout(() => {
         resolve('Resolved!');
         // reject(new Error('Rejected!'));
-    }, 1000);
+    }, 10);
 });
 
-promise.then(value => console.log(value), error => console.error(error))
-    .then(() => console.log('Chained promise', getId()))
-    .then(() => console.log('Chained promise 2', getId()))
-    .then(() => console.log('Chained promise 3', getId()));
+promise.then(value => console.log(1, 0, value), error => console.error(error))
+    .then(() => console.log(1, 1, 'Chained promise'))
+    .then(() => console.log(1, 2, 'Chained promise'))
+    .then(() => console.log(1, 3, 'Chained promise'));
+promise.then(value => console.log(2, 0, value), error => console.error(error))
+    .then(() => console.log(2, 1, 'Chained promise'))
+    .then(() => console.log(2, 2, 'Chained promise'));
+promise.then(value => console.log(3, 0, value), error => console.error(error))
+    .then(() => console.log(3, 1, 'Chained promise'));
+promise.then(value => console.log(4, 0, value), error => console.error(error));
