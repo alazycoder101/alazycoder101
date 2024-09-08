@@ -29,7 +29,7 @@ class MyPromise {
             if (this.state === 'pending') {
                 this.state = 'fulfilled';
                 this.value = value;
-                this.handlers.forEach((h) => this._handle(h));
+                this.handlers.reverse().forEach((h) => this._handle(h));
             }
         }, 0);
     }
