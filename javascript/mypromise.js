@@ -29,7 +29,7 @@ class MyPromise {
             if (this.state === 'pending') {
                 this.state = 'fulfilled';
                 this.value = value;
-                this.handlers.reverse().forEach((h) => this._handle(h));
+                this.handlers.forEach((h) => this._handle(h));
             }
         }, 0);
     }
@@ -89,7 +89,22 @@ class MyPromise {
         });
     }
 
-    // You can also implement `catch` and `finally` methods...
+    catch(onRejected) {
+        return this.then(null, onRejected);
+    }
+
+    finally(onFinally) {
+        return this.then(
+            value => {
+                onFinally();
+                return value;
+            },
+            reason => {
+                onFinally();
+                throw reason;
+            }
+        );
+    }
 }
 
 // Usage example
@@ -110,3 +125,8 @@ promise.then(value => console.log(2, 0, value), error => console.error(error))
 promise.then(value => console.log(3, 0, value), error => console.error(error))
     .then(() => console.log(3, 1, 'Chained promise'));
 promise.then(value => console.log(4, 0, value), error => console.error(error));
+
+promise
+    .then(value => console.log('Fulfilled:', value))
+    .catch(error => console.error('Caught:', error))
+    .finally(() => console.log('Finally: This runs regardless of the outcome'));
