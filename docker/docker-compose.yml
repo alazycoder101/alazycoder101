@@ -1,0 +1,19 @@
+services:
+  web:
+    image: fpm-tini
+    build:
+      context: ./php-fpm
+    # stops_signal: SIGTERM
+    volumes:
+      - ./html:/var/www/html
+  nginx:
+    image: nginx-tini
+    build:
+      context: ./nginx
+    ports:
+      - "8000:80"
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d
+    # stops_signal: SIGTERM
+    depends_on:
+      - web
