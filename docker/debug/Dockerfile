@@ -1,0 +1,8 @@
+ARG BASE_IMAGE=alpine
+FROM ${BASE_IMAGE}
+
+WORKDIR /app
+RUN sh
+RUN exit 1
+RUN echo ${BASE_IMAGE}
+
