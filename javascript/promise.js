@@ -50,8 +50,18 @@ promise.then(function () {
 }).then(function () {
     console.log('promise', 2, 2);
 });
-promise.then(function () {
-    console.log('promise', 3, 1);
-});
 
+promise3 = new Promise(function (resolve, reject) {
+  console.log('promise3', 3, 1);
+  Promise.resolve().then(function () {
+    resolve();
+    console.log('promise3', 3, 2);
+  });
+})
+
+promise3.then(function () {
+    console.log('promise3', 1, 1);
+}).then(function () {
+    console.log('promise3', 1, 2);
+});
 console.log('Script end');

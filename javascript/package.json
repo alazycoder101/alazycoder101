@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "@babel/core": "^7.25.2",
+    "falafel": "^2.2.5",
+    "lodash": "^4.17.21",
+    "node-fetch": "^3.3.2",
+    "pretty-format": "^29.7.0",
+    "vm2": "^3.9.19"
+  }
+}
