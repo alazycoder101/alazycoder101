@@ -1,0 +1,59 @@
+# Brewfile
+
+# /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+# brew install homebrew/bundle/brew-bundle
+# cd /path/to/your/Brewfile/ && brew bundle install
+# brew bundle install --file ~/.Brewfile
+#
+# Taps (optional, but good practice if you use many packages from a specific tap)
+# tap "homebrew/core" # This is usually implicitly available
+# tap "homebrew/cask" # This is usually implicitly available
+
+# Command-line tools (Formulae)
+brew "neovim"
+brew "vim"
+brew "colima" # Docker Engine alternative
+
+# Applications (Casks)
+cask "visual-studio-code"
+cask "kitty"
+cask "warp"
+cask "iterm2"
+cask "orbstack" # Docker Engine alternative
+
+# Best Developer Tools (additional recommendations)
+# Productivity & System Utilities
+cask "raycast"
+cask "rectangle"
+brew "zsh"
+brew "tmux"
+brew "htop"
+brew "ripgrep"
+brew "fzf"
+brew "git" # often preinstalled, but ensures Homebrew version
+brew "tree"
+
+# Development Specific Tools
+brew "node"
+brew "yarn"
+brew "pyenv"
+cask "docker" # Docker Desktop
+cask "postman"
+brew "ngrok"
+brew "jq"
+brew "httpie"
+
+# Optional (uncomment if you want them)
+# cask "dash"
+# cask "fork" # Or gitkraken, tower
+# cask "tableplus" # Or sequel-ace
+
+# Mac App Store apps (if you use 'mas' utility)
+# Ensure 'mas' is installed first: brew "mas"
+# mas "Magnet", id: 441258766
+# mas "Amphetamine", id: 937984704
+
+# VS Code Extensions (if you use 'brew bundle dump --global' for this)
+# vscode "editorconfig.editorconfig"
+# vscode "esbenp.prettier-vscode"
+# vscode "ms-vscode.go"
