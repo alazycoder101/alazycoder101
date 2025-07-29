@@ -11,15 +11,11 @@
 
 # Command-line tools (Formulae)
 brew "neovim"
-brew "vim"
+#brew "vim"
 brew "colima" # Docker Engine alternative
 
 # Applications (Casks)
 cask "visual-studio-code"
-cask "kitty"
-cask "warp"
-cask "iterm2"
-cask "orbstack" # Docker Engine alternative
 
 # Best Developer Tools (additional recommendations)
 # Productivity & System Utilities
@@ -38,10 +34,79 @@ brew "node"
 brew "yarn"
 brew "pyenv"
 cask "docker" # Docker Desktop
+cask "orbstack" # Docker Engine alternative
 cask "postman"
 brew "ngrok"
 brew "jq"
 brew "httpie"
+
+# Version Control
+brew "lazygit" # Git GUI for lazy people
+brew "gh" # GitHub CLI
+
+brew "gcloud" # Google Cloud CLI
+
+brew "maccy" # Clipboard manager
+
+# Security & Privacy
+cask "1password" # Password manager
+cask "bitwarden" # Alternative password manager
+cask "little-snitch" # Network monitor
+cask "lulu"
+cask "blockblock" # Prevents unwanted background processes
+cask "appcleaner" # Uninstall applications completely
+cask "cleanmymac" # System cleanup tool
+
+# Communication & Collaboration
+cask "slack"
+
+# Developer Tools
+# cask "intellij-idea" # IntelliJ IDEA (Community Edition)
+# cask "android-studio" # Android Studio
+# cask "postico" # PostgreSQL GUI
+# cask "tableplus" # Database GUI (alternative to Postico)
+# cask "sourcetree" # Git GUI (alternative to GitKraken, Fork)
+# cask "insomnia" # API client (alternative to Postman)
+# cask "zeplin" # Design collaboration tool
+# cask "vscode" # Visual Studio Code (if you prefer it over the Homebrew version)
+# cask "postman" # API client (if you prefer it over Insomnia)
+#
+
+# Devops tools
+# cask "docker"
+# cask "kubernetes-cli" # kubectl
+# cask "terraform" # Infrastructure as Code tool
+# cask "helm" # Kubernetes package manager
+# cask "awscli" # AWS Command Line Interface
+# cask "azure-cli" # Azure Command Line Interface
+#
+# Shell
+# cask "kitty" # Terminal emulator (alternative to iTerm2)
+# cask "warp" # Modern terminal (alternative to iTerm2, Kitty)
+# cask "iterm2" # Terminal emulator (if you prefer it over Kitty or Warp)
+# # Optional Developer Tools (uncomment if you want them)
+# cask "intellij-idea" # IntelliJ IDEA (Community Edition)
+# cask "android-studio" # Android Studio
+# cask "postman" # API client (alternative to Insomnia)
+# cask "vscode" # Visual Studio Code (if you prefer it over the Homebrew version)
+
+# Optional Developer Tools (uncomment if you want them)
+cask "intellij-idea-ce" # IntelliJ IDEA Community Edition
+cask "android-studio" # Android Studio
+cask "postman" # API client (alternative to Insomnia)
+cask "vscode" # Visual Studio Code (if you prefer it over the Homebrew version)
+
+# # Optional Developer Tools (uncomment if you want them)
+# cask "gitkraken" # Git GUI (alternative to Fork)
+# cask "fork" # Git GUI (alternative to GitKraken)
+# cask "sourcetree" # Git GUI (alternative to Fork, GitKraken)
+# cask "tableplus" # Database GUI (alternative to Postico, DBeaver)
+
+# Optional tools for specific workflows
+cask "dbeaver-community" # Universal Database Tool
+cask "postico" # PostgreSQL GUI
+cask "insomnia" # API client
+cask "zeplin" # Design collaboration tool
 
 # Optional (uncomment if you want them)
 # cask "dash"
