@@ -1,0 +1,61 @@
+2024-12-02 23:17:06,874 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:17:06,878 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:17:06,878 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:17:06,880 INFO supervisord started with pid 1
+2024-12-02 23:17:07,883 INFO spawned: 'php-fpm' with pid 7
+2024-12-02 23:17:08,911 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-12-02 23:18:26,986 WARN received SIGQUIT indicating exit request
+2024-12-02 23:18:26,987 INFO waiting for php-fpm to die
+2024-12-02 23:18:30,015 INFO waiting for php-fpm to die
+2024-12-02 23:18:33,019 INFO waiting for php-fpm to die
+2024-12-02 23:18:36,022 INFO waiting for php-fpm to die
+2024-12-02 23:19:38,453 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:19:38,756 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:19:38,756 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:19:38,759 INFO supervisord started with pid 1
+2024-12-02 23:19:39,761 INFO spawned: 'php-fpm' with pid 7
+2024-12-02 23:19:40,781 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-12-02 23:27:12,227 WARN received SIGTERM indicating exit request
+2024-12-02 23:27:12,228 INFO waiting for php-fpm to die
+2024-12-02 23:27:15,258 INFO waiting for php-fpm to die
+2024-12-02 23:27:18,261 INFO waiting for php-fpm to die
+2024-12-02 23:27:21,263 INFO waiting for php-fpm to die
+2024-12-02 23:28:41,130 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:28:41,133 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:28:41,133 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:28:41,135 INFO supervisord started with pid 1
+2024-12-02 23:28:42,136 INFO spawned: 'php-fpm' with pid 6
+2024-12-02 23:28:43,168 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-12-02 23:35:04,549 WARN received SIGQUIT indicating exit request
+2024-12-02 23:35:04,549 INFO waiting for php-fpm to die
+2024-12-02 23:35:07,581 INFO waiting for php-fpm to die
+2024-12-02 23:35:10,584 INFO waiting for php-fpm to die
+2024-12-02 23:35:13,586 INFO waiting for php-fpm to die
+2024-12-02 23:35:43,952 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:35:43,956 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:35:43,956 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:35:43,960 INFO supervisord started with pid 1
+2024-12-02 23:35:44,961 INFO spawned: 'php-fpm' with pid 6
+2024-12-02 23:35:45,982 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-12-02 23:37:30,085 WARN received SIGQUIT indicating exit request
+2024-12-02 23:37:30,085 INFO waiting for php-fpm to die
+2024-12-02 23:37:33,119 INFO waiting for php-fpm to die
+2024-12-02 23:37:36,122 INFO waiting for php-fpm to die
+2024-12-02 23:37:39,125 INFO waiting for php-fpm to die
+2024-12-02 23:40:28,976 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:40:28,979 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:40:28,979 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:40:28,981 INFO supervisord started with pid 1
+2024-12-02 23:40:29,983 INFO spawned: 'php-fpm' with pid 7
+2024-12-02 23:40:31,016 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
+2024-12-02 23:40:52,037 WARN received SIGTERM indicating exit request
+2024-12-02 23:40:52,039 INFO waiting for php-fpm to die
+2024-12-02 23:40:55,062 INFO waiting for php-fpm to die
+2024-12-02 23:40:58,066 INFO waiting for php-fpm to die
+2024-12-02 23:41:01,069 INFO waiting for php-fpm to die
+2024-12-02 23:42:28,781 CRIT Supervisor is running as root.  Privileges were not dropped because no user is specified in the config file.  If you intend to run as root, you can set user=root in the config file to avoid this message.
+2024-12-02 23:42:29,085 INFO RPC interface 'supervisor' initialized
+2024-12-02 23:42:29,085 CRIT Server 'unix_http_server' running without any HTTP authentication checking
+2024-12-02 23:42:29,088 INFO supervisord started with pid 1
+2024-12-02 23:42:30,091 INFO spawned: 'php-fpm' with pid 7
+2024-12-02 23:42:31,111 INFO success: php-fpm entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)
